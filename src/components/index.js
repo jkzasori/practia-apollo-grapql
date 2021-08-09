@@ -1,4 +1,4 @@
 import Login from "./home/login";
 import GeneralInformation from "./general/generalInformation";
-
-export { Login, GeneralInformation };
+import LogOut from "./general/logOut";
+export { Login, GeneralInformation, LogOut };
