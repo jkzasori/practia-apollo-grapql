@@ -1,45 +1,28 @@
 import { useEffect } from "react";
 import { Login, GeneralInformation } from "../../components";
 import { HomeContainer } from "./styles";
+import { useLocation } from "wouter";
 import { useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import { Redirect } from "wouter";
+import { homeService } from "../../libs/services";
 
-const LOGIN = gql`
-  mutation login($cellphone: String!, $password: String!) {
-    login(cellphone: $cellphone, password: $password) {
-      __typename
-      ... on AuthInfo {
-        token
-        user {
-          id
-          firstName
-          lastName
-        }
-      }
-      ... on ValidationErrors {
-        message
-      }
-    }
-  }
-`;
 const Home = () => {
-  const [login, { loading, error, data }] = useMutation(LOGIN);
+  const [login, { loading, error, data }] = useMutation(homeService.LOGIN);
+  const [, setLocation] = useLocation();
   const redirect = (token) => {
     if (token) {
-      return <Redirect to="/client/" />;
-    } else {
-      return "";
+      setLocation("/client/");
     }
   };
+
   useEffect(() => {
     if (data?.login?.token) {
       localStorage.setItem("userTK", JSON.stringify(data?.login?.token));
     }
   }, [data]);
-  
+
   return (
-    <HomeContainer>{redirect(data?.login?.token)}
+    <HomeContainer>
+      {redirect(data?.login?.token)}
       <GeneralInformation
         logo
         title={"Welcome to Elenas Frontend test"}

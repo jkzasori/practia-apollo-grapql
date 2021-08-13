@@ -1,5 +1,5 @@
 import { Route, Switch } from "wouter";
-import { Home, Client } from "../../container";
+import { Home, Client, WelcomeNewUSer } from "../../container";
 
 function Screen() {
   return (
@@ -10,6 +10,10 @@ function Screen() {
         <Route
           path="/"
           component={!localStorage.getItem("userTK") ? Client : Home}
+        />
+        <Route
+          path="/new-user"
+          component={!localStorage.getItem("userTK") ? Home : WelcomeNewUSer}
         />
         <Route>{!localStorage.getItem("userTK") ? <Home /> : <Client />}</Route>
       </Switch>
